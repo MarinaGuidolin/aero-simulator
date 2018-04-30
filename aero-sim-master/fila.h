@@ -27,6 +27,7 @@ typedef struct {
   elemento_t * primeiro;
   elemento_t * ultimo;
   size_t n_elementos;
+  size_t n_tamanho_atual_fila;
 } fila_ordenada_t;
 
 // Alocacão dinâmica da fila ordenada de aviões
@@ -40,7 +41,7 @@ void desaloca_fila (fila_ordenada_t * fila);
 // Não se esqueca de criar o elemento_t
 void inserir (fila_ordenada_t * fila, aviao_t * dado);
 
-// Remove o último da fila.
+// Remove o primeiro da fila.
 aviao_t * remover (fila_ordenada_t * fila);
 
 #endif

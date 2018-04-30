@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "aeroporto.h"
-
+#define NUM_AVIOES 20
 #define NOVO_AVIAO_MIN 30
 #define NOVO_AVIAO_MAX 120
 #define COMBUSTIVEL_MIN 1

@@ -13,8 +13,8 @@
 aviao_t * aloca_aviao (size_t combustivel, size_t id) { // aloca aonde ??? memoria
  	aviao_t aviao*;
  	aviao = (aviao_t * ) malloc(sizeof(aviao_t)); 
- 	aviao_t.combustivel = combustivel;
- 	aviao_t.id = id;
+ 	aviao->combustivel = combustivel;
+ 	aviao->id = id;
 
  	return aviao;
  	
