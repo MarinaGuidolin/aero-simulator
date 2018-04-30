@@ -13,6 +13,7 @@ aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args) {
 
 void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao) {
 	// local onde os avioes para pousar irão esperar
+	
 
 }
 

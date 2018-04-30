@@ -32,7 +32,6 @@ aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args);
  * mas somente se houver uma pista livre para ele.
  **/
 void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao);
-
 /**
  * Esta função deve fazer com que o aviao pouse, utilizando uma pista livre.
  * Ela não pode ser chamada se não houver pistas livres. Em seguida o avião
