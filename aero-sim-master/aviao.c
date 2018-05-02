@@ -11,15 +11,10 @@
 
 
 // retorna um vetor chamado aviao 
-aviao_t * aloca_aviao (size_t combustivel, size_t id) { 
- 	pthread_t currentThread = pthread_self();  // funcao que pega a thread atual (??)
- 	aviao_t aviao*;
- 	aviao = (aviao_t * ) malloc(sizeof(aviao_t)); 
- 	aviao->combustivel = combustivel;
- 	aviao->id = id;
- 	aviao->thread = currentThread;
-
- 	return aviao;
+void * aloca_aviao (void* args) { 
+	aviao_t aviao = *(aviao_t*) args; 	
+ 	aviao = (aviao_t * ) malloc(sizeof(aviao_t));
+ 	
  	
 }
 

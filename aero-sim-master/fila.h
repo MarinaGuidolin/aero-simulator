@@ -9,7 +9,7 @@
  * anterior e o próximo. Use estes ponteiros para ordenar a fila a cada
  * insercão
  **/
-typedef struct elemento_t {
+ struct elemento_t {
   struct elemento_t * anterior;
   struct elemento_t * proximo;
   aviao_t * dado;

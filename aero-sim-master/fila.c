@@ -9,7 +9,7 @@
 // fila[i] retornara um tipo elemento_t ???
 
 fila_ordenada_t * criar_fila (size_t n_avioes) { // aloca espaço para a fila
-	fila_ordenada_t fila;
+	fila_ordenada_t* fila;
 	fila = (fila_ordenada_t*)malloc(sizeof(fila_ordenada_t));
 	fila->primeiro = NULL;
 	fila->ultimo = NULL; 

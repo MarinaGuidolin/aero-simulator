@@ -1,8 +1,10 @@
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "aeroporto.h"
+#include <aviao.c>
+
 #define NUM_AVIOES 20
 #define NOVO_AVIAO_MIN 30
 #define NOVO_AVIAO_MAX 120
@@ -13,6 +15,7 @@
 #define TEMPO_INSERIR_BAGAGENS 110
 #define TEMPO_BAGAGENS_ESTEIRA 200
 #define TEMPO_SIMULACAO 10000
+
 
 int main (int argc, char** argv) {
 
@@ -83,7 +86,6 @@ int main (int argc, char** argv) {
 	printf("Número de esteiras: %lu, com %lu aviões por esteira\n", n_esteiras, n_max_avioes_esteira);
 	printf("Tempo das bagagens nas esteiras: %lu\n", t_bagagens_esteira);
 
-	pthread_t avioes[NUM_AVIOES]; // array de threads - representando os avioes
 	// Inicialização do aeroporto
 	n_args = 8;
 	size_t args[8] = {n_pistas, n_portoes, n_esteiras,
@@ -95,6 +97,17 @@ int main (int argc, char** argv) {
 
 	// Descreve aqui sua simulação usando as funções definidas no arquivo "aeroporto.h"
 	// Lembre-se de implementá-las num novo arquivo "aeroporto.c"
+
+	pthread_t avioes[NUM_AVIOES];
+	aviao_t args[NUM_AVIOES];
+
+	for(i = 0; i < NUM_AVIOES; i++){
+		args->id = i;
+		args->combustivel = (rand() % 100);
+		args->thread = avioes[i];
+		pthread_create(&avioes[i], NULL, aloca_aviao, (void *)&args[i]);
+
+	}
 
 
 	finalizar_aeroporto(meu_aeroporto);
