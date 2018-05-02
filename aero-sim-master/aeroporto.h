@@ -6,10 +6,10 @@
 typedef size_t tempo_t;
 
 typedef struct {
-	size_t n_pistas
-	size_t n_portoes
-	size_t n_esteiras,
-	size_t n_max_avioes_esteira,
+	size_t n_pistas;
+	size_t n_portoes;
+	size_t n_esteiras;
+	size_t n_max_avioes_esteira;
 	tempo_t t_pouso_decolagem;
 	tempo_t t_remover_bagagens;
 	tempo_t t_inserir_bagagens;

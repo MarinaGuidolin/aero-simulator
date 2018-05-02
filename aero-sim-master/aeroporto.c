@@ -8,7 +8,17 @@
 sem_t pista; //semafoto da pista
  
 aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args) {
-	return NULL;
+	aeroporto_t aeroporto*;
+	aeroporto = (aeroporto_t*)malloc(sizeof(aeroporto_t));
+	aeroporto->n_pistas = args[0];
+	aeroporto->n_portoes = args[1];
+	aeroporto->n_esteiras = args[2];
+	aeroporto->n_max_avioes_esteira = args[3];
+	aeroporto->t_pouso_decolagem = args[4];
+	aeroporto-> t_remover_bagagens= args[5];
+	aeroporto->t_inserir_bagagens = args[6];
+	aeroporto->t_bagagens_esteira = args[7];
+	return aeroporto;
 }
 
 void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao) {

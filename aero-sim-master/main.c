@@ -83,6 +83,7 @@ int main (int argc, char** argv) {
 	printf("Número de esteiras: %lu, com %lu aviões por esteira\n", n_esteiras, n_max_avioes_esteira);
 	printf("Tempo das bagagens nas esteiras: %lu\n", t_bagagens_esteira);
 
+	pthread_t avioes[NUM_AVIOES]; // array de threads - representando os avioes
 	// Inicialização do aeroporto
 	n_args = 8;
 	size_t args[8] = {n_pistas, n_portoes, n_esteiras,
