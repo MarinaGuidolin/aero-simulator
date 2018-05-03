@@ -27,7 +27,6 @@ typedef struct {
   elemento_t * primeiro;
   elemento_t * ultimo;
   size_t n_elementos;
-  size_t n_tamanho_atual_fila;
 } fila_ordenada_t;
 
 // Alocacão dinâmica da fila ordenada de aviões
