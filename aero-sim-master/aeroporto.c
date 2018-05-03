@@ -18,13 +18,15 @@ aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args) {
 	aeroporto-> t_remover_bagagens= args[5];
 	aeroporto->t_inserir_bagagens = args[6];
 	aeroporto->t_bagagens_esteira = args[7];
+	fila_ordenada_t fila_pousar = criar_fila();
+	fila_ordenada_t fila_portao = criar_fila();
 	return aeroporto;
 }
 
 void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao) {
 	// local onde os avioes para pousar irão esperar
-	
-
+	bool no_ar = true;
+	//inserir aviao na fila(???)
 }
 
 void pousar_aviao (aeroporto_t* aeroporto, aviao_t* aviao) {
@@ -50,5 +52,6 @@ void decolar_aviao (aeroporto_t* aeroporto, aviao_t* aviao) {
 }
 
 int finalizar_aeroporto (aeroporto_t* aeroporto) {
+	free(aeroporto);
 	return 0;
 }
