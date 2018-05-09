@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "aeroporto.h"
-#include <aviao.c>
+#include "aviao.h"
+#include "fila.h"
+
 
 #define NUM_AVIOES 20
 #define NOVO_AVIAO_MIN 30
@@ -27,7 +29,7 @@ int main (int argc, char** argv) {
 
 	// Variáveis discretas (inicio n_)
 	size_t n_pistas, n_portoes;
-	size_t n_max_avioes_esteira, n_esteiras;
+	size_t n_max_avioes_esteira, n_esteiras, n_avioes;
 	size_t n_args;
 
 	// Variáveis de prioridade (inicio p_)
@@ -43,6 +45,7 @@ int main (int argc, char** argv) {
 		t_simulacao = TEMPO_SIMULACAO;
 		p_combustivel_min = COMBUSTIVEL_MIN;
 		p_combustivel_max = COMBUSTIVEL_MAX;
+		n_avioes = NUM_AVIOES;
 		n_pistas = atoi(argv[1]);
 		n_portoes = atoi(argv[2]);
 		n_max_avioes_esteira = atoi(argv[3]);
@@ -89,26 +92,31 @@ int main (int argc, char** argv) {
 	// Inicialização do aeroporto
 	n_args = 8;
 	size_t args[8] = {n_pistas, n_portoes, n_esteiras,
-				n_max_avioes_esteira,
-				t_pouso_decolagem, t_remover_bagagens,
-				t_inserir_bagagens, t_bagagens_esteira};
+		n_max_avioes_esteira,
+		t_pouso_decolagem, t_remover_bagagens,
+		t_inserir_bagagens, t_bagagens_esteira};
 
 	aeroporto_t* meu_aeroporto = iniciar_aeroporto(args, n_args);
 
 	// Descreve aqui sua simulação usando as funções definidas no arquivo "aeroporto.h"
 	// Lembre-se de implementá-las num novo arquivo "aeroporto.c"
-
-	pthread_t avioes[NUM_AVIOES];
-	aviao_t args[NUM_AVIOES];
-
-	for(i = 0; i < NUM_AVIOES; i++){
-		args->id = i;
-		args->combustivel = (rand() % 100);
-		args->thread = avioes[i];
-		pthread_create(&avioes[i], NULL, aloca_aviao, (void *)&args[i]);
-
+	size_t i;
+	pthread_t threads_avioes[NUM_AVIOES]; // avioes
+	parametros_t parametros[NUM_AVIOES];
+	aviao_t* argument[NUM_AVIOES]; // argumentos dos avioes
+	for(i = 0; i < NUM_AVIOES; i++) {
+		size_t combustivel = (rand() %((10+1)-1) +1; // combustivel gerado de 1 a 9
+		aviao_t* aviao = aloca_aviao(combustivel, id); // cria um aviao com um combustivel e um id
+		parametros[i]->aeroporto = meu_aeroporto;
+		parametros[i]->aviao = aviao;
+		pthread_create(&avioes[i], NULL, aproximacao_aeroporto, (void *)&parametros[i]); 
+		aviao->thread = threads_avioes[i];
+		
 	}
 
+	for(i = 0; i < NUM_AVIOES; i++) {
+		pthread_join(avioes[i], NULL); 
+	}
 
 	finalizar_aeroporto(meu_aeroporto);
 	return 1;

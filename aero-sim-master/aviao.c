@@ -11,8 +11,8 @@
 
 
 // retorna um vetor chamado aviao 
-void * aloca_aviao (void* args) { 
-	aviao_t aviao = *(aviao_t*) args; 	
+void *aloca_aviao (size_t combustivel, size_t id)) { 
+	aviao_t aviao = *(aviao_t*) argument; 	
  	aviao = (aviao_t * ) malloc(sizeof(aviao_t));
  	
  	

@@ -9,7 +9,7 @@
  * anterior e o próximo. Use estes ponteiros para ordenar a fila a cada
  * insercão
  **/
- struct elemento_t {
+ typedef 	struct {
   struct elemento_t * anterior;
   struct elemento_t * proximo;
   aviao_t * dado;
@@ -27,7 +27,6 @@ typedef struct {
   elemento_t * primeiro;
   elemento_t * ultimo;
   size_t n_elementos;
-  size_t n_tamanho_atual_fila;
 } fila_ordenada_t;
 
 // Alocacão dinâmica da fila ordenada de aviões
