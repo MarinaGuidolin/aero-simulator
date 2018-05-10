@@ -12,8 +12,8 @@
  **/
 
 typedef struct {
-  struct elemento_t * anterior;
-  struct elemento_t * proximo;
+  struct elemento_t *anterior;
+  struct elemento_t *proximo;
   aviao_t * dado;
 } elemento_t;
 
@@ -26,8 +26,8 @@ void desaloca_elemento (elemento_t * elemento);
  * prioridade.
  **/
 typedef struct {
-  elemento_t * primeiro;
-  elemento_t * ultimo;
+  elemento_t *primeiro;
+  elemento_t *ultimo;
   size_t n_elementos;
   pthread_mutex_t mutex_fila;
 } fila_ordenada_t;

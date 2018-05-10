@@ -30,10 +30,11 @@ void desaloca_elemento (elemento_t * elemento) {
 
 void desaloca_fila (fila_ordenada_t *fila) {
 	elemento_t *elemento = fila->primeiro;
-	for (size_t i = 0; i < fila->n_elementos; i++) {
-		elemento_t *proximo = elemento->proximo;
+	elemento_t *post;
+  for (size_t i = 0; i < fila->n_elementos; i++) {
+		post = elemento->proximo;
 		desaloca_elemento(elemento);
-		elemento = proximo;
+		elemento = post;
 	}
 	free(fila);
 }
