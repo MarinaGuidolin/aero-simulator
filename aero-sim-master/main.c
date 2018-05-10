@@ -1,9 +1,8 @@
-
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "aeroporto.h"
-#include <aviao.c>
+#include "aviao.h"
 
 #define NUM_AVIOES 20
 #define NOVO_AVIAO_MIN 30

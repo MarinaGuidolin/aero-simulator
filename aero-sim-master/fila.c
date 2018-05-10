@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <pthread.h>
+#include <stdlib.h>
 
 #include "fila.h"
 
@@ -9,7 +10,7 @@
  * Descrições em fila.h
  **/
 
-fila_ordenada_t *criar_fila (size_t n_avioes) { // aloca espaço para a fila
+fila_ordenada_t *criar_fila() { // aloca espaço para a fila
   fila_ordenada_t* fila = (fila_ordenada_t*)malloc(sizeof(fila_ordenada_t));
   fila->n_elementos = 0;
   pthread_mutex_init(&fila->mutex_fila, NULL);
@@ -18,7 +19,7 @@ fila_ordenada_t *criar_fila (size_t n_avioes) { // aloca espaço para a fila
 }
 
 elemento_t *aloca_elemento (aviao_t * dado) {
-  elemento_t* elemento = *(elemento_t*)malloc(sizeof(elemento_t*)); // aloca espaço para um elemento_t
+  elemento_t* elemento = (elemento_t*)malloc(sizeof(elemento_t*)); // aloca espaço para um elemento_t
   elemento->dado = dado;
   return elemento;
 }
@@ -27,11 +28,11 @@ void desaloca_elemento (elemento_t * elemento) {
   	free(elemento);
 }
 
-void desaloca_fila (fila_ordenada_t * fila) {
+void desaloca_fila (fila_ordenada_t *fila) {
 	elemento_t *elemento = fila->primeiro;
 	for (size_t i = 0; i < fila->n_elementos; i++) {
 		elemento_t *proximo = elemento->proximo;
-		free(elemento);
+		desaloca_elemento(elemento);
 		elemento = proximo;
 	}
 	free(fila);
@@ -56,10 +57,10 @@ void inserir (fila_ordenada_t *fila, aviao_t *dado) {
   pthread_mutex_unlock(&fila->mutex_fila);
 }
 
-aviao_t *remover (fila_ordenada_t * fila) {
+aviao_t *remover (fila_ordenada_t *fila) {
   if(fila->n_elementos == 0) {
     printf("Fila vazia\n"); 
-    return;
+    return 0;
   }
   elemento_t* prim = fila->primeiro;
   aviao_t* removido = prim->dado;

@@ -1,6 +1,7 @@
 #ifndef FILA_AVIAO_H
 #define FILA_AVIAO_H
 
+#include <pthread.h>
 #include "aviao.h"
 
 /**
@@ -28,6 +29,7 @@ typedef struct {
   elemento_t * primeiro;
   elemento_t * ultimo;
   size_t n_elementos;
+  pthread_mutex_t mutex_fila;
 } fila_ordenada_t;
 
 // Alocacão dinâmica da fila ordenada de aviões
