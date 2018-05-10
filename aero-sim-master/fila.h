@@ -1,3 +1,4 @@
+#ifndef FILA_AVIAO_H
 #define FILA_AVIAO_H
 
 #include "aviao.h"
