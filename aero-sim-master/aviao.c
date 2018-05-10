@@ -1,5 +1,6 @@
-#include "aviao.h"
 #include <pthread.h>
+
+#include "aviao.h"
 
 /**
  * aviao.c

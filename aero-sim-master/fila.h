@@ -1,4 +1,3 @@
-#ifndef FILA_AVIAO_H
 #define FILA_AVIAO_H
 
 #include "aviao.h"
@@ -9,7 +8,8 @@
  * anterior e o próximo. Use estes ponteiros para ordenar a fila a cada
  * insercão
  **/
- struct elemento_t {
+
+typedef struct {
   struct elemento_t * anterior;
   struct elemento_t * proximo;
   aviao_t * dado;

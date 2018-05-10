@@ -93,23 +93,41 @@ int main (int argc, char** argv) {
 				t_pouso_decolagem, t_remover_bagagens,
 				t_inserir_bagagens, t_bagagens_esteira};
 
+
+	// Variavel de tempo aleatório
+	srand(time(NULL));
+	size_t tempo_aleatorio = (rand() % ((t_novo_aviao_max + 1) - t_novo_aviao_min) + t_novo_aviao_min);
+
 	aeroporto_t* meu_aeroporto = iniciar_aeroporto(args, n_args);
 
 	// Descreve aqui sua simulação usando as funções definidas no arquivo "aeroporto.h"
 	// Lembre-se de implementá-las num novo arquivo "aeroporto.c"
 
-	pthread_t avioes[NUM_AVIOES];
-	aviao_t args[NUM_AVIOES];
+	size_t i;
+	pthread_t threads_avioes[NUM_AVIOES]; // avioes
+	parametros_t* parametros[NUM_AVIOES];
+	aviao_t* argument[NUM_AVIOES]; // argumentos dos avioes
+	
+	// gerenciando tempo de simulação
+	for (i = 0; i < t_simulacao; i++) {	
+		for(i = 0; i < NUM_AVIOES; i++) {
+			// combustivel gerado de 1 a 9
+			size_t combustivel = (rand() % ((p_combustivel_max + 1) - p_combustivel_min) + p_combustivel_min); 
+			
+			aviao_t* aviao = aloca_aviao(combustivel, i); // cria um aviao com um combustivel e um id
+			parametros[i]->aeroporto = meu_aeroporto;
+			parametros[i]->aviao = aviao;
+			pthread_create(&threads_avioes[i], NULL, aproximacao_aeroporto, (void *)&parametros[i]); 
+			aviao->thread = threads_avioes[i];
+			
+			// tempo aleatório entre a criação de um aviao e outro
+			sleep(tempo_aleatorio);
+		}
 
-	for(i = 0; i < NUM_AVIOES; i++){
-		args->id = i;
-		args->combustivel = (rand() % 100);
-		args->thread = avioes[i];
-		pthread_create(&avioes[i], NULL, aloca_aviao, (void *)&args[i]);
-
+		for(i = 0; i < NUM_AVIOES; i++) {
+			pthread_join(threads_avioes[i], NULL); 
+		}
 	}
-
-
 	finalizar_aeroporto(meu_aeroporto);
 	return 1;
 }
