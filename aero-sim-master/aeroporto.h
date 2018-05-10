@@ -7,8 +7,8 @@
 
 typedef size_t tempo_t;
 
-typedef struct
-{
+typedef struct {
+
     aeroporto_t* aeroporto;
     aviao_t* aviao;
     
@@ -23,7 +23,7 @@ typedef struct {
 	tempo_t t_remover_bagagens;
 	tempo_t t_inserir_bagagens;
 	tempo_t t_bagagens_esteira;
-	fila_ordenada_t* fila_pousar;
+	fila_ordenada_t* fila_pistas, fila_esteiras, fila_portoes;
 	size_t contador_pistas_livres;
 	// Adicionar aqui outros atributos que você achar necessários.
 	// Exemplo: esteiras, portões, etc...

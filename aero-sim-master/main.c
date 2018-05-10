@@ -102,20 +102,20 @@ int main (int argc, char** argv) {
 	// Lembre-se de implementá-las num novo arquivo "aeroporto.c"
 	size_t i;
 	pthread_t threads_avioes[NUM_AVIOES]; // avioes
-	parametros_t parametros[NUM_AVIOES];
+	parametros_t* parametros[NUM_AVIOES];
 	aviao_t* argument[NUM_AVIOES]; // argumentos dos avioes
 	for(i = 0; i < NUM_AVIOES; i++) {
-		size_t combustivel = (rand() %((10+1)-1) +1; // combustivel gerado de 1 a 9
-		aviao_t* aviao = aloca_aviao(combustivel, id); // cria um aviao com um combustivel e um id
+		size_t combustivel = (rand() %((10+1)-1) +1); // combustivel gerado de 1 a 9
+		aviao_t* aviao = aloca_aviao(combustivel, i); // cria um aviao com um combustivel e um id
 		parametros[i]->aeroporto = meu_aeroporto;
 		parametros[i]->aviao = aviao;
-		pthread_create(&avioes[i], NULL, aproximacao_aeroporto, (void *)&parametros[i]); 
+		pthread_create(&threads_avioes[i], NULL, aproximacao_aeroporto, (void *)&parametros[i]); 
 		aviao->thread = threads_avioes[i];
 		
 	}
 
 	for(i = 0; i < NUM_AVIOES; i++) {
-		pthread_join(avioes[i], NULL); 
+		pthread_join(threads_avioes[i], NULL); 
 	}
 
 	finalizar_aeroporto(meu_aeroporto);
