@@ -59,10 +59,6 @@ void inserir (fila_ordenada_t *fila, aviao_t *dado) {
 }
 
 aviao_t *remover (fila_ordenada_t *fila) {
-  if(fila->n_elementos == 0) {
-    printf("Fila vazia\n"); 
-    return 0;
-  }
   elemento_t* prim = fila->primeiro;
   aviao_t* removido = prim->dado;
   fila->primeiro = prim->proximo;

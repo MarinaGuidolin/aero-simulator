@@ -43,6 +43,6 @@ void desaloca_fila (fila_ordenada_t * fila);
 void inserir (fila_ordenada_t * fila, aviao_t * dado);
 
 // Remove o primeiro da fila.
-aviao_t * remover (fila_ordenada_t * fila);
+aviao_t* remover (fila_ordenada_t * fila);
 
 #endif
