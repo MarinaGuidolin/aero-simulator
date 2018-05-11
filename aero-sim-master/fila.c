@@ -15,7 +15,6 @@ fila_ordenada_t *criar_fila() { // aloca espaço para a fila
   fila->primeiro = NULL;
   fila->ultimo = NULL;
   fila->n_elementos = 0;
-  printf("fila criada\n");
   return fila;
 }
 
@@ -24,7 +23,6 @@ elemento_t *aloca_elemento (aviao_t *dado) {
   elemento->anterior = NULL;
   elemento->proximo = NULL;
   elemento->dado = dado;
-  printf("alocado o elemento\n");
   return elemento;
 }
 
@@ -44,13 +42,11 @@ void desaloca_fila (fila_ordenada_t *fila) {
 }
 
 void inserir (fila_ordenada_t *fila, aviao_t *dado) {
-  elemento_t *elemento = aloca_elemento(dado);  
-  printf("alocado\n");
-  size_t combustivel_aviao_a_inserir = dado->combustivel; 
+  elemento_t *elemento = aloca_elemento(dado);
   if (fila->n_elementos == 0) { // se a fila estiver vazia, o elemento adicionado será o primeiro elemento e o ultimo elemento
     fila->primeiro = elemento;
     fila->ultimo = elemento;
-  } else if (combustivel_aviao_a_inserir <= 1) {
+  } else if (dado->combustivel <= 1) {
     elemento_t *primeiro = fila->primeiro;
     primeiro->anterior = elemento;
     fila->primeiro = elemento;
@@ -59,6 +55,7 @@ void inserir (fila_ordenada_t *fila, aviao_t *dado) {
     ultimo->proximo = elemento;
     fila->ultimo = elemento;
   }
+  fila->n_elementos++;
 }
 
 aviao_t *remover (fila_ordenada_t *fila) {

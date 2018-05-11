@@ -2,6 +2,7 @@
 #define AEROPORTO_H
 
 #include <pthread.h>
+#include <semaphore.h>
 #include "aeroporto.h"
 #include "aviao.h"
 #include "fila.h"
@@ -17,15 +18,19 @@ typedef struct {
 	tempo_t t_remover_bagagens;
 	tempo_t t_inserir_bagagens;
 	tempo_t t_bagagens_esteira;
-	fila_ordenada_t* fila_pouso;
-	pthread_mutex_t mutex_fila_add, mutex_fila_rm;
+	fila_ordenada_t *fila_pouso;
+	pthread_mutex_t *mutex_fila_add;
+	pthread_mutex_t *mutex_fila_rm;
+	sem_t sem_portoes;
+	sem_t sem_esteiras;
+	sem_t sem_pistas;
 	// Adicionar aqui outros atributos que você achar necessários.
 	// Exemplo: esteiras, portões, etc...
 } aeroporto_t;
 
 typedef struct {
-    aeroporto_t* aeroporto;
-    aviao_t* aviao;
+    aeroporto_t *aeroporto;
+    aviao_t *aviao;
 } parametros_t;
 
 /**
