@@ -34,12 +34,17 @@ aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args) {
 	return aeroporto;
 }
 
-void aproximacao_aeroporto (void* parametros) {
+void pega_valores_aproximacao(parametros_t *parametros) {
 	parametros_t *param = (parametros_t*) parametros;
-	aeroporto_t *aeroporto = param->aeroporto;
-	aviao_t *aviao = param->aviao;
+	aproximacao_aeroporto(param->aeroporto, param->aviao);
+	free(parametros);
+}
+
+void aproximacao_aeroporto (aeroporto_t *aeroporto, aviao_t *aviao) {
 	// local onde os avioes para pousar irão esperar
+	printf("vamo1\n");
 	pthread_mutex_lock(&aeroporto->mutex_fila_add); // verifica se estao inserindo na fila
+	printf("vamo2\n");
 	inserir(aeroporto->fila_pouso, aviao);
 	printf("Aviao %lu inserido na fila com %lu de combustivel\n", aviao->id, aviao->combustivel);
 	pthread_mutex_unlock(&aeroporto->mutex_fila_add); // libera o semaforo de inserir na fila
@@ -100,3 +105,4 @@ int finalizar_aeroporto (aeroporto_t* aeroporto) {
 	free(aeroporto);
 	return 0;
 }
+

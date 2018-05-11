@@ -1,10 +1,10 @@
 #include <pthread.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "aeroporto.h"
 #include "aviao.h"
 
-#define NUM_AVIOES 20
 #define NOVO_AVIAO_MIN 30
 #define NOVO_AVIAO_MAX 120
 #define COMBUSTIVEL_MIN 1
@@ -104,24 +104,23 @@ int main (int argc, char** argv) {
 
 	size_t i;
 	pthread_t threads_avioes[NOVO_AVIAO_MAX]; // avioes
-	parametros_t* parametros[NOVO_AVIAO_MAX];
-	
+	printf("vai filhao\n");
 	// gerenciando tempo de simulação
-	for (i = 0; i < t_simulacao; i++) {	
-		for(i = 0; i < NUM_AVIOES; i++) {
+	while(t_simulacao > 0) {
+		for(i = 0; i < NOVO_AVIAO_MAX; i++) {
 			// combustivel gerado de 1 a 9
 			size_t combustivel = (rand() % ((p_combustivel_max - p_combustivel_min) + p_combustivel_min)); 
 			aviao_t* aviao = aloca_aviao(combustivel, i); // cria um aviao com um combustivel e um id
-			parametros[i]->aeroporto = meu_aeroporto;
-			parametros[i]->aviao = aviao;
-			pthread_create(&threads_avioes[i], NULL, aproximacao_aeroporto, (void *)&parametros[i]); 
+			parametros_t* parametros = (parametros_t*) malloc(sizeof(parametros_t));
+			parametros->aeroporto = meu_aeroporto;
+			parametros->aviao = aviao;
+			pthread_create(&threads_avioes[i], NULL, pega_valores_aproximacao, (void *)&parametros); 
 			aviao->thread = threads_avioes[i];
-			
 			// tempo aleatório entre a criação de um aviao e outro
 			sleep(tempo_aleatorio);
 		}
 
-		for(i = 0; i < NUM_AVIOES; i++) {
+		for(i = 0; i < NOVO_AVIAO_MAX; i++) {
 			pthread_join(threads_avioes[i], NULL); 
 		}
 	}
