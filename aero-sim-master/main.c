@@ -98,21 +98,19 @@ int main (int argc, char** argv) {
 	size_t tempo_aleatorio = (rand() % ((t_novo_aviao_max + 1) - t_novo_aviao_min) + t_novo_aviao_min);
 
 	aeroporto_t* meu_aeroporto = iniciar_aeroporto(args, n_args);
-
+	
 	// Descreve aqui sua simulação usando as funções definidas no arquivo "aeroporto.h"
 	// Lembre-se de implementá-las num novo arquivo "aeroporto.c"
 
 	size_t i;
-	pthread_t threads_avioes[NUM_AVIOES]; // avioes
-	parametros_t* parametros[NUM_AVIOES];
-	aviao_t* argument[NUM_AVIOES]; // argumentos dos avioes
+	pthread_t threads_avioes[NOVO_AVIAO_MAX]; // avioes
+	parametros_t* parametros[NOVO_AVIAO_MAX];
 	
 	// gerenciando tempo de simulação
 	for (i = 0; i < t_simulacao; i++) {	
 		for(i = 0; i < NUM_AVIOES; i++) {
 			// combustivel gerado de 1 a 9
-			size_t combustivel = (rand() % ((p_combustivel_max + 1) - p_combustivel_min) + p_combustivel_min); 
-			
+			size_t combustivel = (rand() % ((p_combustivel_max - p_combustivel_min) + p_combustivel_min)); 
 			aviao_t* aviao = aloca_aviao(combustivel, i); // cria um aviao com um combustivel e um id
 			parametros[i]->aeroporto = meu_aeroporto;
 			parametros[i]->aviao = aviao;

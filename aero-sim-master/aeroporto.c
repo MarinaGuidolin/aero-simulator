@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
+#include <unistd.h>
 
 #include "aeroporto.h"
 #include "fila.h"
@@ -25,11 +25,12 @@ aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args) {
 	aeroporto->t_remover_bagagens= args[5];
 	aeroporto->t_inserir_bagagens = args[6];
 	aeroporto->t_bagagens_esteira = args[7];
-	aeroporto->fila_pousar = criar_fila(); // fila antes de entrar na pista
+	aeroporto->fila_pouso = criar_fila(); // fila antes de entrar na pista
 	sem_init(&portoes, 0, aeroporto->n_portoes); // semaforo que define os portoes ocupados 
 	sem_init(&esteiras, 0, aeroporto->n_esteiras); // semaforo que define as esteiras ocupadas
 	sem_init(&pistas, 0, aeroporto->n_pistas); // semaforo que define as pistas ocupadas
-	sem_init(&fila, 0, 1); // semaforo que define a fila
+	pthread_mutex_init(&aeroporto->mutex_fila_add, NULL);
+	pthread_mutex_init(&aeroporto->mutex_fila_rm, NULL);
 	return aeroporto;
 }
 
@@ -38,19 +39,21 @@ void aproximacao_aeroporto (void* parametros) {
 	aeroporto_t *aeroporto = param->aeroporto;
 	aviao_t *aviao = param->aviao;
 	// local onde os avioes para pousar irão esperar
-	sem_wait(&fila); // verifica se estao inserindo na fila
-	inserir(aeroporto->fila_pousar, aviao);
+	pthread_mutex_lock(&aeroporto->mutex_fila_add); // verifica se estao inserindo na fila
+	inserir(aeroporto->fila_pouso, aviao);
 	printf("Aviao %lu inserido na fila com %lu de combustivel\n", aviao->id, aviao->combustivel);
-	sem_post(&fila); // libera o semaforo de inserir na fila
+	pthread_mutex_unlock(&aeroporto->mutex_fila_add); // libera o semaforo de inserir na fila
 	pousar_aviao(aeroporto, aviao); // semaforo da pista é liberado apenas após sua saida da pista
 }
 
 void pousar_aviao (aeroporto_t* aeroporto, aviao_t* aviao) {
 	// quando uma pista estiver desocupada
 	sem_wait(&pistas); // verifica se a pista esta ocupada
-	aviao = remover(aeroporto->fila_pousar); // tira o aviao da fila de pouso --> "pousa o aviao"
-	printf("Aviao %lu pousou\n", aviao->id);
+	pthread_mutex_lock(&aeroporto->mutex_fila_rm);
+	aviao = remover(aeroporto->fila_pouso); // tira o aviao da fila de pouso --> "pousa o aviao"
 	sleep(aeroporto->t_pouso_decolagem); // "tempo de pouso"
+	printf("Aviao %lu pousou\n", aviao->id);
+	pthread_mutex_unlock(&aeroporto->mutex_fila_rm);
 	sem_post(&pistas); // libera uma pista
 	acoplar_portao(aeroporto, aviao); // se aproxima para acoplar ao portao
 }
@@ -89,6 +92,11 @@ void decolar_aviao (aeroporto_t* aeroporto, aviao_t* aviao) {
 }
 
 int finalizar_aeroporto (aeroporto_t* aeroporto) {
+	sem_destroy(&pistas);
+	sem_destroy(&portoes);
+	sem_destroy(&esteiras);
+	pthread_mutex_destroy(&aeroporto->mutex_fila_add);
+	pthread_mutex_destroy(&aeroporto->mutex_fila_rm);
 	free(aeroporto);
 	return 0;
 }

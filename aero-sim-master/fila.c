@@ -12,19 +12,20 @@
 
 fila_ordenada_t *criar_fila() { // aloca espaço para a fila
   fila_ordenada_t* fila = (fila_ordenada_t*)malloc(sizeof(fila_ordenada_t));
+  fila->primeiro = NULL;
+  fila->ultimo = NULL;
   fila->n_elementos = 0;
-  pthread_mutex_init(&fila->mutex_fila, NULL);
   printf("fila criada\n");
   return fila;
 }
 
-elemento_t *aloca_elemento (aviao_t * dado) {
-  elemento_t* elemento = (elemento_t*)malloc(sizeof(elemento_t*)); // aloca espaço para um elemento_t
+elemento_t *aloca_elemento (aviao_t *dado) {
+  elemento_t* elemento = (elemento_t*) malloc(sizeof(elemento_t*)); // aloca espaço para um elemento_t
   elemento->dado = dado;
   return elemento;
 }
 
-void desaloca_elemento (elemento_t * elemento) {
+void desaloca_elemento (elemento_t *elemento) {
   	free(elemento);
 }
 
@@ -42,11 +43,11 @@ void desaloca_fila (fila_ordenada_t *fila) {
 void inserir (fila_ordenada_t *fila, aviao_t *dado) {
   elemento_t* elemento = aloca_elemento(dado);  
   size_t combustivel_aviao_a_inserir = dado->combustivel; 
-  pthread_mutex_lock(&fila->mutex_fila);
+  
   if (fila->n_elementos == 0) { // se a fila estiver vazia, o elemento adicionado será o primeiro elemento e o ultimo elemento
     fila->primeiro = elemento;
     fila->ultimo = elemento;
-  } else if (combustivel_aviao_a_inserir == 1) {
+  } else if (combustivel_aviao_a_inserir <= 1) {
     elemento_t *primeiro = fila->primeiro;
     primeiro->anterior = elemento;
     fila->primeiro = elemento;
@@ -55,7 +56,6 @@ void inserir (fila_ordenada_t *fila, aviao_t *dado) {
     ultimo->proximo = elemento;
     fila->ultimo = elemento;
   }
-  pthread_mutex_unlock(&fila->mutex_fila);
 }
 
 aviao_t *remover (fila_ordenada_t *fila) {

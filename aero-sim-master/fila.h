@@ -29,7 +29,6 @@ typedef struct {
   elemento_t *primeiro;
   elemento_t *ultimo;
   size_t n_elementos;
-  pthread_mutex_t mutex_fila;
 } fila_ordenada_t;
 
 // Alocacão dinâmica da fila ordenada de aviões
