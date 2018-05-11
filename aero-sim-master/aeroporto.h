@@ -1,18 +1,15 @@
 #ifndef AEROPORTO_H
 #define AEROPORTO_H
-
+#include "semaphore.h"
 #include "aviao.h"
 #include "fila.h"
 #include <stdbool.h>
+#include <pthread.h>
+#include <stdlib.h>
 
 typedef size_t tempo_t;
 
-typedef struct {
 
-    aeroporto_t* aeroporto;
-    aviao_t* aviao;
-    
-} parametros_t;
 
 typedef struct {
 	size_t n_pistas;
@@ -23,12 +20,21 @@ typedef struct {
 	tempo_t t_remover_bagagens;
 	tempo_t t_inserir_bagagens;
 	tempo_t t_bagagens_esteira;
-	fila_ordenada_t* fila_pistas, fila_esteiras, fila_portoes;
-	size_t contador_pistas_livres;
+	fila_ordenada_t* fila_pouso;
+	pthread_mutex_t* mutex_fila_add;
+	pthread_mutex_t* mutex_fila_rm;
+	sem_t* sem_portoes;
+	sem_t* sem_esteiras;
+	sem_t* sem_pistas;
 	// Adicionar aqui outros atributos que você achar necessários.
 	// Exemplo: esteiras, portões, etc...
 } aeroporto_t;
 
+typedef struct {
+    aeroporto_t* aeroporto;
+    aviao_t* aviao;
+    
+} parametros_t;
 
 /**
  * Esta função deve fazer a alocação dinâmica de um aeroporto (malloc)
@@ -42,7 +48,7 @@ aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args);
  * do aeroporto. Nesta situação um avião deve pousar em seguida,
  * mas somente se houver uma pista livre para ele.
  **/
-void aproximacao_aeroporto (aeroporto_t* aeroporto, aviao_t* aviao);
+void aproximacao_aeroporto (void* parametros);
 /**
  * Esta função deve fazer com que o aviao pouse, utilizando uma pista livre.
  * Ela não pode ser chamada se não houver pistas livres. Em seguida o avião

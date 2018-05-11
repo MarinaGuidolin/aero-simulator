@@ -1,6 +1,6 @@
 #ifndef AVIAO_H
 #define AVIAO_H
-
+#include <stdlib.h>
 #include <pthread.h>
 
 /**

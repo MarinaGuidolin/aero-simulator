@@ -1,29 +1,41 @@
 #include "fila.h"
-
+#include <stdlib.h>
+#include    <stdio.h>
+#include <stdlib.h>
 /**
  * fila.c
  * Implementação das funções da fila.h
  * Descrições em fila.h
  **/
 
-// fila[i] retornara um tipo elemento_t ???
-
-fila_ordenada_t *criar_fila (size_t n_avioes) { // aloca espaço para a fila
-  fila_ordenada_t* fila = (fila_ordenada_t*)malloc(sizeof(fila_ordenada_t));
-    fila->n_elementos = 0;
-    pthread_mutex_init(&fila->mutex_fila, NULL);
-    return fila;
-}
-
-elemento_t *aloca_elemento (aviao_t * dado) {
-    elemento_t* elemento = *(elemento_t*)malloc(sizeof(elemento_t*)); // aloca espaço para um elemento_t
+ elemento_t * aloca_elemento (aviao_t * dado) {
+    
+    elemento_t* elemento = (elemento_t*) malloc(sizeof(elemento_t));
+    
+    elemento->anterior = NULL;
+    elemento->proximo = NULL;
     elemento->dado = dado;
+
     return elemento;
+ }
+
+ void desaloca_elemento (elemento_t * elemento) {
+    free(elemento);
+ }
+
+fila_ordenada_t * criar_fila () {
+    printf("antes de alocar fila no criar fila\n");
+    fila_ordenada_t* fila = (fila_ordenada_t*) malloc(sizeof(fila_ordenada_t));
+    printf("fila criada no criarfila\n");
+
+    fila->primeiro = NULL;
+    fila->ultimo = NULL;
+    fila->n_elementos = 0;
+    printf("apos definir vetores fila\n");
+    return fila;
+    
 }
 
-void desaloca_elemento (elemento_t * elemento) {
-    free(elemento);
-}
 
 void desaloca_fila (fila_ordenada_t * fila) {
   elemento_t* elemento = fila->primeiro;
@@ -32,14 +44,14 @@ void desaloca_fila (fila_ordenada_t * fila) {
     free(elemento);
     elemento = proximo;
   }
-  pthread_mutex_destroy(&fila->mutex_fila);
+  
   free(fila);
 }
 
 void inserir (fila_ordenada_t *fila, aviao_t *dado) {
   elemento_t* elemento = aloca_elemento(dado);  
   size_t combustivel_aviao_a_inserir = dado->combustivel; 
-  pthread_mutex_lock(&fila->mutex_fila);
+
   if (fila->n_elementos == 0) { // se a fila estiver vazia, o elemento adicionado será o primeiro elemento e o ultimo elemento
     fila->primeiro = elemento;
     fila->ultimo = elemento;
@@ -52,7 +64,7 @@ void inserir (fila_ordenada_t *fila, aviao_t *dado) {
         ultimo->proximo = elemento;
         fila->ultimo = elemento;
     }
-    pthread_mutex_unlock(&fila->mutex_fila);
+    
 }
 
 aviao_t *remover (fila_ordenada_t * fila) {

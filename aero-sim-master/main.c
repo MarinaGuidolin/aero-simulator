@@ -2,9 +2,9 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "aeroporto.h"
 #include "aviao.h"
-#include "fila.h"
 
 
 #define NUM_AVIOES 20
@@ -17,6 +17,7 @@
 #define TEMPO_INSERIR_BAGAGENS 110
 #define TEMPO_BAGAGENS_ESTEIRA 200
 #define TEMPO_SIMULACAO 10000
+
 
 
 int main (int argc, char** argv) {
@@ -96,20 +97,28 @@ int main (int argc, char** argv) {
 		t_pouso_decolagem, t_remover_bagagens,
 		t_inserir_bagagens, t_bagagens_esteira};
 
+	srand(time(NULL));
+	size_t tempo_aleatorio = (rand() % ((t_novo_aviao_max + 1) - t_novo_aviao_min) + t_novo_aviao_min);
+		
+	printf("iniciando aeroporto...\n");
 	aeroporto_t* meu_aeroporto = iniciar_aeroporto(args, n_args);
-
+	printf("aeroporto iniciado\n");
 	// Descreve aqui sua simulação usando as funções definidas no arquivo "aeroporto.h"
 	// Lembre-se de implementá-las num novo arquivo "aeroporto.c"
-	size_t i;
-	pthread_t threads_avioes[NUM_AVIOES]; // avioes
-	parametros_t* parametros[NUM_AVIOES];
-	aviao_t* argument[NUM_AVIOES]; // argumentos dos avioes
-	for(i = 0; i < NUM_AVIOES; i++) {
+
+size_t i;
+	pthread_t threads_avioes[NOVO_AVIAO_MAX]; // avioes
+	printf("apos a declaracao do array threads_avioes\n");
+	parametros_t* parametros[NOVO_AVIAO_MAX];
+	printf("apos os parametros\n");
+	for(i = 0; i < 5; i++) {
 		size_t combustivel = (rand() %((10+1)-1) +1); // combustivel gerado de 1 a 9
 		aviao_t* aviao = aloca_aviao(combustivel, i); // cria um aviao com um combustivel e um id
 		parametros[i]->aeroporto = meu_aeroporto;
 		parametros[i]->aviao = aviao;
+		printf("parametros definidos\n");
 		pthread_create(&threads_avioes[i], NULL, aproximacao_aeroporto, (void *)&parametros[i]); 
+		printf("apos o create\n");
 		aviao->thread = threads_avioes[i];
 		
 	}
