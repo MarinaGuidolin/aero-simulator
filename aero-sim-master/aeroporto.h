@@ -21,9 +21,9 @@ typedef struct {
 	fila_ordenada_t *fila_pouso;
 	pthread_mutex_t *mutex_fila_add;
 	pthread_mutex_t *mutex_fila_rm;
-	sem_t sem_portoes;
-	sem_t sem_esteiras;
-	sem_t sem_pistas;
+	sem_t *sem_portoes;
+	sem_t *sem_esteiras;
+	sem_t *sem_pistas;
 	// Adicionar aqui outros atributos que você achar necessários.
 	// Exemplo: esteiras, portões, etc...
 } aeroporto_t;
@@ -39,14 +39,6 @@ typedef struct {
  * aos atributos da struct aeroporto
  **/
 aeroporto_t* iniciar_aeroporto (size_t* args, size_t n_args);
-
-/**
- * Esta função deve ser chamada pela thread para passar os argumentos para executar
- * as acoes do aviao
- **/
-
-void pega_valores_aproximacao(parametros_t* parametros);
-
 
 /**
  * Esta função deve ser chamada quando um novo avião se aproxima

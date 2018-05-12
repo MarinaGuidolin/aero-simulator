@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "aviao.h"
+#include "aeroporto.h"
 
 /**
  * aviao.c
@@ -22,4 +23,10 @@ aviao_t *aloca_aviao (size_t combustivel, size_t id) {
 
 void desaloca_aviao(aviao_t* aviao) {
 	free(aviao);
+}
+
+void *pega_valores_aproximacao(void *arg) {
+	parametros_t *param = (parametros_t*)arg;
+	aproximacao_aeroporto(param->aeroporto, param->aviao);
+	free(arg);
 }
